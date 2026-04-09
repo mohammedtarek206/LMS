@@ -29,6 +29,10 @@ const caseSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    price: {
+      type: Number,
+      default: 0,
+    },
     attachedFiles: [
       {
         filename: String,

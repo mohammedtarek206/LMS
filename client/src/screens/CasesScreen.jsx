@@ -35,7 +35,7 @@ const CasesScreen = () => {
   const generatePDF = (caseItem) => {
     const doc = new jsPDF();
     doc.setFontSize(22);
-    doc.text('Figa Lab', 105, 20, { align: 'center' });
+    doc.text('Viga Lab', 105, 20, { align: 'center' });
     doc.setFontSize(14);
     doc.text('Pathology Report', 105, 30, { align: 'center' });
     doc.setFontSize(12);

@@ -12,6 +12,7 @@ const AddCaseScreen = () => {
   const [specimen, setSpecimen] = useState('');
   const [gross, setGross] = useState('');
   const [microscopic, setMicroscopic] = useState('');
+  const [price, setPrice] = useState('');
   const [loading, setLoading] = useState(false);
 
   const submitHandler = async (e) => {
@@ -38,6 +39,7 @@ const AddCaseScreen = () => {
         specimen,
         grossDescription: gross,
         microscopicDescription: microscopic,
+        price: parseFloat(price) || 0,
       };
 
       await api.post('/cases', caseData);
@@ -107,6 +109,19 @@ const AddCaseScreen = () => {
               value={microscopic}
               onChange={(e) => setMicroscopic(e.target.value)}
             ></textarea>
+          </div>
+
+          <div className="input-group">
+            <label className="input-label">سعر التحليل (جنيه)</label>
+            <input 
+              type="number" 
+              className="input-field" 
+              placeholder="0.00"
+              min="0"
+              step="0.01"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+            />
           </div>
 
           <button type="submit" disabled={loading} className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '20px', width: '100%', justifyContent: 'center' }}>

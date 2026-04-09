@@ -15,7 +15,7 @@ const Sidebar = () => {
   return (
     <div className="sidebar no-print" style={{ width: '250px', background: 'var(--panel-bg)', height: '100vh', padding: '20px', borderRight: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column' }}>
       <div style={{ marginBottom: '40px', textAlign: 'center', fontWeight: 'bold', fontSize: '20px', color: 'var(--primary-color)' }}>
-        Figa Lab / فيحا لاب
+        Viga Lab / فيجا لاب
       </div>
       
       <nav style={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: 1 }}>

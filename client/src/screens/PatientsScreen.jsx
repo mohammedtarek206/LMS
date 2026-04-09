@@ -12,7 +12,7 @@ const PatientsScreen = () => {
   const [loading, setLoading] = useState(false);
 
   // New patient form state
-  const [newPatient, setNewPatient] = useState({ name: '', nationalId: '', age: '', gender: 'Male', referringDoctor: '' });
+  const [newPatient, setNewPatient] = useState({ name: '', nationalId: '', age: '', gender: 'Male', referringDoctor: '', phone: '' });
 
   const [patients, setPatients] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -74,7 +74,7 @@ const PatientsScreen = () => {
       // Re-fetch to get correctly sorted/paginated data
       await fetchPatients();
       setShowAddForm(false);
-      setNewPatient({ name: '', nationalId: '', age: '', gender: 'Male', referringDoctor: '' });
+      setNewPatient({ name: '', nationalId: '', age: '', gender: 'Male', referringDoctor: '', phone: '' });
     } catch (error) {
       alert(error.response?.data?.message || 'فشل إضافة المريض');
     }
@@ -170,6 +170,10 @@ const PatientsScreen = () => {
                 <label className="input-label">الطبيب المعالج / Referring Doctor</label>
                 <input type="text" className="input-field" placeholder="اسم دكتور المريض" required value={newPatient.referringDoctor} onChange={e => setNewPatient({...newPatient, referringDoctor: e.target.value})} />
               </div>
+              <div className="input-group">
+                <label className="input-label">رقم التليفون</label>
+                <input type="tel" className="input-field" placeholder="رقم هاتف المريض" value={newPatient.phone} onChange={e => setNewPatient({...newPatient, phone: e.target.value})} />
+              </div>
             </div>
             <button type="submit" className="btn btn-primary" style={{ marginTop: '10px' }}>حفظ المريض</button>
           </form>
@@ -229,6 +233,16 @@ const PatientsScreen = () => {
                   className="input-field" 
                   value={editingPatient.referringDoctor || ''}
                   onChange={e => setEditingPatient({...editingPatient, referringDoctor: e.target.value})}
+                />
+              </div>
+              <div className="input-group">
+                <label className="input-label">رقم التليفون</label>
+                <input 
+                  type="tel" 
+                  className="input-field" 
+                  placeholder="رقم هاتف المريض"
+                  value={editingPatient.phone || ''}
+                  onChange={e => setEditingPatient({...editingPatient, phone: e.target.value})}
                 />
               </div>
             </div>

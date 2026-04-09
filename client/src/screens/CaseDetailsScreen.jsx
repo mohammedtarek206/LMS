@@ -29,7 +29,7 @@ const CaseDetailsScreen = () => {
     if (!caseItem) return;
     const doc = new jsPDF();
     doc.setFontSize(22);
-    doc.text('Figa Lab', 105, 20, { align: 'center' });
+    doc.text('Viga Lab', 105, 20, { align: 'center' });
     doc.setFontSize(14);
     doc.text('Pathology Report', 105, 30, { align: 'center' });
     doc.setFontSize(12);
@@ -81,8 +81,8 @@ const CaseDetailsScreen = () => {
           <div className="print-flex" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <div style={{ width: '200px' }}></div> {/* Spacer for balance */}
             <div style={{ textAlign: 'center', flex: 1 }}>
-              <h1 style={{ color: '#000', margin: 0, fontSize: '28px' }}>فيحا لاب</h1>
-              <h2 style={{ color: '#000', margin: '5px 0', fontSize: '20px' }}>Figa Lab</h2>
+              <h1 style={{ color: '#000', margin: 0, fontSize: '28px' }}>فيجا لاب</h1>
+              <h2 style={{ color: '#000', margin: '5px 0', fontSize: '20px' }}>Viga Lab</h2>
               <span style={{ color: '#666', fontSize: '14px' }}>تقرير باثولوجي (Pathology Report)</span>
             </div>
             <div style={{ width: '200px' }}></div>

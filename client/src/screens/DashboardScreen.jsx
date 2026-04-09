@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Users, FileText, Activity } from 'lucide-react';
+import { Users, FileText, Activity, DollarSign } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import api from '../api';
 
 const DashboardScreen = () => {
   const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
-  const [stats, setStats] = useState({ patients: 0, cases: 0, todayCases: 0 });
+  const [stats, setStats] = useState({ patients: 0, cases: 0, todayCases: 0, totalRevenue: 0 });
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -29,13 +29,15 @@ const DashboardScreen = () => {
           casesData = casesRes.data;
         }
 
+        const totalRevenue = casesData.reduce((sum, c) => sum + (c.price || 0), 0);
+
         setStats({
           patients: patientsData.length,
           cases: casesData.length,
-          todayCases: casesData.filter(c => c && c.createdAt && new Date(c.createdAt).toDateString() === new Date().toDateString()).length
+          todayCases: casesData.filter(c => c && c.createdAt && new Date(c.createdAt).toDateString() === new Date().toDateString()).length,
+          totalRevenue,
         });
 
-        // Calculate chart data (Last 7 days)
         const dayNames = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
         const dynamicData = [];
         for (let i = 6; i >= 0; i--) {
@@ -55,7 +57,6 @@ const DashboardScreen = () => {
     fetchStats();
   }, []);
 
-
   return (
     <div style={{ padding: '20px' }}>
       <div style={{ marginBottom: '20px' }}>
@@ -67,14 +68,14 @@ const DashboardScreen = () => {
         </p>
       </div>
       
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px', marginBottom: '30px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px', marginBottom: '30px' }}>
         <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <span style={{ color: 'var(--text-secondary)' }}>إجمالي المرضى</span>
             <Users size={20} color="var(--primary-color)" />
           </div>
           <h2 style={{ fontSize: '28px' }}>{loading ? '...' : stats.patients}</h2>
-          <span style={{ color: 'var(--success)', fontSize: '14px' }}>+12% عن الشهر الماضي</span>
+          <span style={{ color: 'var(--success)', fontSize: '14px' }}>مريض مسجل</span>
         </div>
         
         <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -83,7 +84,7 @@ const DashboardScreen = () => {
             <FileText size={20} color="#8b5cf6" />
           </div>
           <h2 style={{ fontSize: '28px' }}>{loading ? '...' : stats.cases}</h2>
-          <span style={{ color: 'var(--success)', fontSize: '14px' }}>+5% عن الشهر الماضي</span>
+          <span style={{ color: 'var(--success)', fontSize: '14px' }}>تقرير مكتمل</span>
         </div>
         
         <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -92,8 +93,21 @@ const DashboardScreen = () => {
             <Activity size={20} color="#f59e0b" />
           </div>
           <h2 style={{ fontSize: '28px' }}>{loading ? '...' : stats.todayCases}</h2>
-          <span style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>حالة قيد الانتظار: 2</span>
+          <span style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>حالة اليوم</span>
         </div>
+
+        {userInfo.role === 'Admin' && (
+          <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: '10px', border: '2px solid #10b981' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ color: 'var(--text-secondary)' }}>إجمالي الإيرادات</span>
+              <DollarSign size={20} color="#10b981" />
+            </div>
+            <h2 style={{ fontSize: '26px', color: '#10b981' }}>
+              {loading ? '...' : `${stats.totalRevenue.toLocaleString()} ج`}
+            </h2>
+            <span style={{ color: '#10b981', fontSize: '14px' }}>إجمالي مدفوعات التحاليل</span>
+          </div>
+        )}
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: '20px' }}>
@@ -119,7 +133,7 @@ const DashboardScreen = () => {
               <thead>
                 <tr style={{ background: 'var(--bg-primary)', textAlign: 'right' }}>
                   <th style={{ padding: '10px' }}>المريض</th>
-                  <th style={{ padding: '10px' }}>الطبيب المعالج</th>
+                  <th style={{ padding: '10px' }}>التليفون</th>
                 </tr>
               </thead>
               <tbody>
@@ -127,9 +141,9 @@ const DashboardScreen = () => {
                   <tr key={p._id} style={{ borderBottom: '1px solid var(--border-color)' }}>
                     <td style={{ padding: '10px' }}>
                       <div style={{ fontWeight: 'bold' }}>{p.name}</div>
-                      <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{p.nationalId}</div>
+                      <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{p.referringDoctor || '---'}</div>
                     </td>
-                    <td style={{ padding: '10px' }}>{p.referringDoctor || '---'}</td>
+                    <td style={{ padding: '10px', color: 'var(--primary-color)' }}>{p.phone || '---'}</td>
                   </tr>
                 ))}
               </tbody>

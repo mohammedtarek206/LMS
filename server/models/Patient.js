@@ -26,6 +26,10 @@ const patientSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    phone: {
+      type: String,
+      default: '',
+    },
   },
   {
     timestamps: true,
