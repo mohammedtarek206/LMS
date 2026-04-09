@@ -12,7 +12,7 @@ const PatientsScreen = () => {
   const [loading, setLoading] = useState(false);
 
   // New patient form state
-  const [newPatient, setNewPatient] = useState({ name: '', nationalId: '', age: '', gender: 'Male', referringDoctor: '', phone: '' });
+  const [newPatient, setNewPatient] = useState({ name: '', nationalId: '', age: '', gender: 'Male', referringDoctor: '', phone: '', price: '' });
 
   const [patients, setPatients] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -74,7 +74,7 @@ const PatientsScreen = () => {
       // Re-fetch to get correctly sorted/paginated data
       await fetchPatients();
       setShowAddForm(false);
-      setNewPatient({ name: '', nationalId: '', age: '', gender: 'Male', referringDoctor: '', phone: '' });
+      setNewPatient({ name: '', nationalId: '', age: '', gender: 'Male', referringDoctor: '', phone: '', price: '' });
     } catch (error) {
       alert(error.response?.data?.message || 'فشل إضافة المريض');
     }
@@ -174,6 +174,10 @@ const PatientsScreen = () => {
                 <label className="input-label">رقم التليفون</label>
                 <input type="tel" className="input-field" placeholder="رقم هاتف المريض" value={newPatient.phone} onChange={e => setNewPatient({...newPatient, phone: e.target.value})} />
               </div>
+              <div className="input-group">
+                <label className="input-label">سعر التحليل (جنيه)</label>
+                <input type="number" className="input-field" placeholder="0" min="0" value={newPatient.price} onChange={e => setNewPatient({...newPatient, price: e.target.value})} />
+              </div>
             </div>
             <button type="submit" className="btn btn-primary" style={{ marginTop: '10px' }}>حفظ المريض</button>
           </form>
@@ -243,6 +247,17 @@ const PatientsScreen = () => {
                   placeholder="رقم هاتف المريض"
                   value={editingPatient.phone || ''}
                   onChange={e => setEditingPatient({...editingPatient, phone: e.target.value})}
+                />
+              </div>
+              <div className="input-group">
+                <label className="input-label">سعر التحليل (جنيه)</label>
+                <input 
+                  type="number" 
+                  className="input-field" 
+                  placeholder="0"
+                  min="0"
+                  value={editingPatient.price || ''}
+                  onChange={e => setEditingPatient({...editingPatient, price: e.target.value})}
                 />
               </div>
             </div>
