@@ -6,8 +6,7 @@
     },
     {
       "source": "/(.*)",
-      "destination": "/client/dist/$1",
-      "check": true
+      "destination": "/client/dist/$1"
     },
     {
       "source": "/(.*)",
