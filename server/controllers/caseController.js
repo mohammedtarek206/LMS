@@ -76,11 +76,19 @@ const getCases = async (req, res, next) => {
     const pageSize = 10;
     const count = await Case.countDocuments({});
 
+    if (req.query.limit === 'all') {
+      const allCases = await Case.find({})
+        .sort({ createdAt: -1 })
+        .populate('patient', 'name nationalId price phone')
+        .populate('doctor', 'name');
+      return res.json({ cases: allCases, page: 1, pages: 1 });
+    }
+
     const cases = await Case.find({})
       .sort({ createdAt: -1 })
       .limit(pageSize)
       .skip(pageSize * (page - 1))
-      .populate('patient', 'name nationalId')
+      .populate('patient', 'name nationalId price phone')
       .populate('doctor', 'name');
 
     res.json({ cases, page, pages: Math.ceil(count / pageSize) });

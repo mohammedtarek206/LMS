@@ -17,8 +17,8 @@ const DashboardScreen = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const patientsRes = await api.get('/patients');
-        const casesRes = await api.get('/cases');
+        const patientsRes = await api.get('/patients?limit=all');
+        const casesRes = await api.get('/cases?limit=all');
 
         let patientsData = [];
         if (patientsRes.data && Array.isArray(patientsRes.data.patients)) {

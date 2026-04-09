@@ -278,6 +278,8 @@ const PatientsScreen = () => {
                 <th>السن</th>
                 <th>النوع</th>
                 <th>الطبيب المعالج</th>
+                <th>رقم التليفون</th>
+                <th>السعر</th>
                 <th>تاريخ الإضافة</th>
                 <th>إجراءات</th>
               </tr>
@@ -290,6 +292,8 @@ const PatientsScreen = () => {
                   <td>{p.age}</td>
                   <td>{p.gender === 'Male' ? 'ذكر' : 'أنثى'}</td>
                   <td style={{ color: 'var(--primary-color)', fontWeight: '500' }}>{p.referringDoctor || '---'}</td>
+                  <td style={{ color: 'var(--text-secondary)' }}>{p.phone || '---'}</td>
+                  <td style={{ color: '#10b981', fontWeight: 'bold' }}>{p.price ? `${Number(p.price).toLocaleString()} ج` : '---'}</td>
                   <td>{new Date(p.createdAt || p.date).toLocaleDateString()}</td>
                   <td>
                     <div style={{ display: 'flex', gap: '8px' }}>

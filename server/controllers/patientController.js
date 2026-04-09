@@ -9,6 +9,12 @@ const getPatients = async (req, res, next) => {
     const pageSize = 10;
     const count = await Patient.countDocuments({});
     
+    // Support fetching all patients for dashboard stats
+    if (req.query.limit === 'all') {
+      const allPatients = await Patient.find({}).sort({ createdAt: -1 });
+      return res.json({ patients: allPatients, page: 1, pages: 1 });
+    }
+
     const patients = await Patient.find({})
       .sort({ createdAt: -1 })
       .limit(pageSize)
@@ -22,7 +28,7 @@ const getPatients = async (req, res, next) => {
 
 const addPatient = async (req, res, next) => {
   try {
-    const { name, nationalId, age, gender, referringDoctor } = req.body;
+    const { name, nationalId, age, gender, referringDoctor, phone, price } = req.body;
 
     const patientExists = await Patient.findOne({ nationalId });
     if (patientExists) {
@@ -36,6 +42,8 @@ const addPatient = async (req, res, next) => {
       age,
       gender,
       referringDoctor,
+      phone,
+      price,
     });
 
     // Log action
@@ -63,7 +71,7 @@ const getPatientById = async (req, res, next) => {
 
 const updatePatient = async (req, res, next) => {
   try {
-    const { name, nationalId, age, gender, referringDoctor } = req.body;
+    const { name, nationalId, age, gender, referringDoctor, phone, price } = req.body;
     const patient = await Patient.findById(req.params.id);
 
     if (patient) {
@@ -72,6 +80,8 @@ const updatePatient = async (req, res, next) => {
       patient.age = age || patient.age;
       patient.gender = gender || patient.gender;
       patient.referringDoctor = referringDoctor || patient.referringDoctor;
+      patient.phone = phone !== undefined ? phone : patient.phone;
+      patient.price = price !== undefined ? price : patient.price;
 
       const updatedPatient = await patient.save();
 

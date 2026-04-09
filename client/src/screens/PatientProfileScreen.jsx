@@ -105,6 +105,16 @@ const PatientProfileScreen = () => {
                 <strong style={{ color: 'var(--text-secondary)' }}>الطبيب المعالج</strong>
                 <span style={{ fontWeight: 'bold', color: 'var(--primary-color)' }}>{patient.referringDoctor || 'لم يحدد'}</span>
               </div>
+              <div style={{ padding: '15px 0', borderTop: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between' }}>
+                <strong style={{ color: 'var(--text-secondary)' }}>رقم الهاتف</strong>
+                <span style={{ direction: 'ltr', textAlign: 'left' }}>{patient.phone || <span style={{ color: 'var(--text-secondary)', fontStyle: 'italic' }}>غير مسجل</span>}</span>
+              </div>
+              <div style={{ padding: '15px 0', borderTop: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between' }}>
+                <strong style={{ color: 'var(--text-secondary)' }}>السعر</strong>
+                <span style={{ fontWeight: 'bold', color: '#10b981' }}>
+                  {patient.price ? `${Number(patient.price).toLocaleString()} ج` : <span style={{ color: 'var(--text-secondary)', fontStyle: 'italic' }}>غير محدد</span>}
+                </span>
+              </div>
               
               <button 
                 onClick={() => setIsEditMode(true)}
@@ -134,6 +144,14 @@ const PatientProfileScreen = () => {
               <div className="input-group">
                 <label className="input-label">الطبيب المعالج / Referring Doctor</label>
                 <input type="text" className="input-field" value={patient.referringDoctor || ''} onChange={e => setPatient({...patient, referringDoctor: e.target.value})} />
+              </div>
+              <div className="input-group">
+                <label className="input-label">رقم الهاتف</label>
+                <input type="tel" className="input-field" placeholder="رقم هاتف المريض" value={patient.phone || ''} onChange={e => setPatient({...patient, phone: e.target.value})} />
+              </div>
+              <div className="input-group">
+                <label className="input-label">السعر (جنيه)</label>
+                <input type="number" className="input-field" placeholder="0" min="0" value={patient.price || ''} onChange={e => setPatient({...patient, price: e.target.value})} />
               </div>
               <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
                 <Save size={16} /> حفظ
