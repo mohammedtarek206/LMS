@@ -27,8 +27,8 @@ const LoginScreen = () => {
     <div style={{ display: 'flex', height: '100vh', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-color)' }}>
       <div className="card" style={{ width: '400px', textAlign: 'center', padding: '40px 30px' }}>
         <Stethoscope size={50} color="var(--primary-color)" style={{ marginBottom: '10px' }} />
-        <h1 style={{ fontSize: '24px', fontWeight: 'bold', color: 'var(--primary-color)', marginBottom: '5px' }}>Fegma Lab</h1>
-        <h2 style={{ fontSize: '18px', color: 'var(--text-secondary)', marginBottom: '30px' }}>فيجما لاب للتحاليل الطبية</h2>
+        <h1 style={{ fontSize: '24px', fontWeight: 'bold', color: 'var(--primary-color)', marginBottom: '5px' }}>Figa Lab</h1>
+        <h2 style={{ fontSize: '18px', color: 'var(--text-secondary)', marginBottom: '30px' }}>فيحا لاب للتحاليل الطبية</h2>
         <p style={{ marginBottom: '20px', fontWeight: '600' }}>تسجيل الدخول للنظام</p>
         
         <form onSubmit={submitHandler}>

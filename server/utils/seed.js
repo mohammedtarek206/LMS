@@ -34,6 +34,7 @@ const seedUsers = async () => {
       await doctor.save();
     }
     
+    console.log('Seed: Done! Admin: admin/123456, Doctor: doctor/123456');
     console.log('Seed: Users verified and updated (admin / doctor).');
   } catch (error) {
     console.error('Seed Error:', error.message);

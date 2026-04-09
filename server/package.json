@@ -1,7 +1,7 @@
 {
-  "name": "lms-backend",
+  "name": "figa-lab-backend",
   "version": "1.0.0",
-  "description": "Lab Management System Backend",
+  "description": "Figa Lab Management System Backend",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
