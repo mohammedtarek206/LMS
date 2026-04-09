@@ -33,9 +33,16 @@ const PatientProfileScreen = () => {
     }
   };
 
-  const filteredCases = cases.filter(c => 
-    c.diagnosis?.toLowerCase().includes(caseSearchTerm.toLowerCase())
-  );
+  const filteredCases = cases.filter(c => {
+    if (!caseSearchTerm.trim()) return true;
+    const term = caseSearchTerm.toLowerCase();
+    return (
+      c.diagnosis?.toLowerCase().includes(term) ||
+      c.specimen?.toLowerCase().includes(term) ||
+      c.grossDescription?.toLowerCase().includes(term) ||
+      c.microscopicDescription?.toLowerCase().includes(term)
+    );
+  });
 
   const handleDelete = async () => {
     if (window.confirm('هل أنت متأكد من حذف هذا المريض نهائياً؟')) {
@@ -184,6 +191,10 @@ const PatientProfileScreen = () => {
           <div className="card table-wrapper">
             {cases.length === 0 ? (
               <p style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>لا توجد تقارير سابقة لهذا المريض.</p>
+            ) : filteredCases.length === 0 ? (
+              <p style={{ textAlign: 'center', color: 'var(--text-secondary)', padding: '20px' }}>
+                لا توجد نتائج لـ “{caseSearchTerm}”
+              </p>
             ) : (
               <table>
                 <thead>
@@ -205,7 +216,6 @@ const PatientProfileScreen = () => {
                       </td>
                     </tr>
                   ))}
-
                 </tbody>
               </table>
             )}
