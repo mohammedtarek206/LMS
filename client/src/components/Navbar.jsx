@@ -56,7 +56,7 @@ const Navbar = ({ toggleTheme, isDark }) => {
       <div style={{ position: 'relative', width: '300px' }} ref={dropdownRef}>
         <input 
           type="text" 
-          placeholder="ابحث بالرقم القومي أو الاسم..." 
+          placeholder="Search by National ID or Name..." 
           className="input-field"
           style={{ paddingLeft: '40px', width: '100%', borderRadius: '20px' }}
           value={query}
@@ -95,7 +95,7 @@ const Navbar = ({ toggleTheme, isDark }) => {
                 </div>
               ))
             ) : (
-              <div style={{ padding: '10px 20px', color: 'var(--text-secondary)', textAlign: 'center' }}>لا توجد نتائج مطابقة</div>
+              <div style={{ padding: '10px 20px', color: 'var(--text-secondary)', textAlign: 'center' }}>No matching results</div>
             )}
           </div>
         )}
@@ -110,11 +110,11 @@ const Navbar = ({ toggleTheme, isDark }) => {
         </button>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--primary-color)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>
-            {userInfo.role === 'Admin' ? 'أ' : 'د'}
+            {userInfo.role === 'Admin' ? 'A' : 'D'}
           </div>
           <div>
-            <div style={{ fontWeight: 'bold', fontSize: '14px' }}>{userInfo.name || 'مستخدم'}</div>
-            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{userInfo.role === 'Admin' ? 'المدير' : 'طبيب'}</div>
+            <div style={{ fontWeight: 'bold', fontSize: '14px' }}>{userInfo.name || 'User'}</div>
+            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{userInfo.role === 'Admin' ? 'Admin' : 'Doctor'}</div>
           </div>
         </div>
       </div>

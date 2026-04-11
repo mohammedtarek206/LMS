@@ -27,9 +27,9 @@ class ErrorBoundary extends Component {
     if (this.state.hasError) {
       return (
         <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', background: 'var(--bg-color)', color: 'var(--text-primary)', padding: '20px' }}>
-          <h2>عذراً، حدث خطأ غير متوقع في النظام ⚠️</h2>
-          <p>يرجى محاولة تحديث الصفحة أو العودة للوحة التحكم.</p>
-          <button onClick={() => window.location.href = '/dashboard'} className="btn btn-primary" style={{ marginTop: '20px' }}>العودة للرئيسية</button>
+          <h2>Sorry, an unexpected system error occurred ⚠️</h2>
+          <p>Please try refreshing the page or returning to the dashboard.</p>
+          <button onClick={() => window.location.href = '/dashboard'} className="btn btn-primary" style={{ marginTop: '20px' }}>Back to Home</button>
         </div>
       );
     }

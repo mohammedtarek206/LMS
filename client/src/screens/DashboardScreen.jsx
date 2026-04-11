@@ -56,7 +56,7 @@ const DashboardScreen = () => {
         });
 
         // Weekly cases chart
-        const dayNames = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+        const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
         const dynamicData = [];
         for (let i = 6; i >= 0; i--) {
           const date = new Date();
@@ -68,7 +68,7 @@ const DashboardScreen = () => {
         setChartData(Object.assign(dynamicData, { patientsList: patientsData }));
 
         // Monthly revenue chart (last 6 months)
-        const monthNames = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         const monthlyData = [];
         for (let i = 5; i >= 0; i--) {
           const d = new Date();
@@ -97,11 +97,11 @@ const DashboardScreen = () => {
   return (
     <div style={{ padding: '20px' }}>
       <div style={{ marginBottom: '20px' }}>
-        <h2 style={{ marginBottom: '5px' }}>أهلاً بك، {userInfo.name} 👋</h2>
+        <h2 style={{ marginBottom: '5px' }}>Welcome, {userInfo.name} 👋</h2>
         <p style={{ color: 'var(--text-secondary)' }}>
           {userInfo.role === 'Admin'
-            ? 'لديك كامل الصلاحيات لإدارة المعمل ومتابعة الإحصائيات الشاملة.'
-            : 'يمكنك مراجعة حالات المرضى وإضافة تقارير طبية جديدة.'}
+            ? 'You have full authority to manage the lab and monitor comprehensive statistics.'
+            : 'You can review patient cases and add new medical reports.'}
         </p>
       </div>
 
@@ -109,41 +109,41 @@ const DashboardScreen = () => {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', marginBottom: '30px' }}>
         <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ color: 'var(--text-secondary)' }}>إجمالي المرضى</span>
+            <span style={{ color: 'var(--text-secondary)' }}>Total Patients</span>
             <Users size={20} color="var(--primary-color)" />
           </div>
           <h2 style={{ fontSize: '28px' }}>{loading ? '...' : stats.patients}</h2>
-          <span style={{ color: 'var(--success)', fontSize: '14px' }}>مريض مسجل</span>
+          <span style={{ color: 'var(--success)', fontSize: '14px' }}>Registered Patients</span>
         </div>
 
         <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ color: 'var(--text-secondary)' }}>التقارير المنجزة</span>
+            <span style={{ color: 'var(--text-secondary)' }}>Reports Completed</span>
             <FileText size={20} color="#8b5cf6" />
           </div>
           <h2 style={{ fontSize: '28px' }}>{loading ? '...' : stats.cases}</h2>
-          <span style={{ color: 'var(--success)', fontSize: '14px' }}>تقرير مكتمل</span>
+          <span style={{ color: 'var(--success)', fontSize: '14px' }}>Completed Reports</span>
         </div>
 
         <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ color: 'var(--text-secondary)' }}>حالات اليوم</span>
+            <span style={{ color: 'var(--text-secondary)' }}>Today's Cases</span>
             <Activity size={20} color="#f59e0b" />
           </div>
           <h2 style={{ fontSize: '28px' }}>{loading ? '...' : stats.todayCases}</h2>
-          <span style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>حالة اليوم</span>
+          <span style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>Today's Case</span>
         </div>
 
         <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: '10px', border: '2px solid #10b981' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ color: 'var(--text-secondary)' }}>إيرادات هذا الشهر</span>
+            <span style={{ color: 'var(--text-secondary)' }}>Revenue This Month</span>
             <TrendingUp size={20} color="#10b981" />
           </div>
           <h2 style={{ fontSize: '24px', color: '#10b981' }}>
-            {loading ? '...' : `${stats.thisMonthRevenue.toLocaleString()} ج`}
+            {loading ? '...' : `${stats.thisMonthRevenue.toLocaleString()} EGP`}
           </h2>
           <span style={{ color: 'var(--text-secondary)', fontSize: '12px' }}>
-            الإجمالي الكلي: {loading ? '...' : `${stats.totalRevenue.toLocaleString()} ج`}
+            Grand Total: {loading ? '...' : `${stats.totalRevenue.toLocaleString()} EGP`}
           </span>
         </div>
       </div>
@@ -152,21 +152,21 @@ const DashboardScreen = () => {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
         {/* Weekly Cases Chart */}
         <div className="card" style={{ height: '320px' }}>
-          <h3 style={{ marginBottom: '15px' }}>الحالات (أسبوعياً)</h3>
+          <h3 style={{ marginBottom: '15px' }}>Cases (Weekly)</h3>
           <ResponsiveContainer width="100%" height="80%">
             <LineChart data={chartData} margin={{ top: 5, right: 20, left: 0, bottom: 0 }}>
               <XAxis dataKey="name" stroke="var(--text-secondary)" fontSize={11} />
               <YAxis stroke="var(--text-secondary)" fontSize={11} />
               <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
               <Tooltip contentStyle={{ backgroundColor: 'var(--panel-bg)', borderColor: 'var(--border-color)', color: 'var(--text-primary)' }} />
-              <Line type="monotone" dataKey="value" name="حالات" stroke="var(--primary-color)" strokeWidth={3} dot={{ r: 5 }} activeDot={{ r: 7 }} />
+              <Line type="monotone" dataKey="value" name="Cases" stroke="var(--primary-color)" strokeWidth={3} dot={{ r: 5 }} activeDot={{ r: 7 }} />
             </LineChart>
           </ResponsiveContainer>
         </div>
 
         {/* Monthly Revenue Chart */}
         <div className="card" style={{ height: '320px' }}>
-          <h3 style={{ marginBottom: '15px' }}>الإيرادات الشهرية (جنيه)</h3>
+          <h3 style={{ marginBottom: '15px' }}>Monthly Revenue (EGP)</h3>
           <ResponsiveContainer width="100%" height="80%">
             <BarChart data={monthlyRevenueData} margin={{ top: 5, right: 20, left: 0, bottom: 0 }}>
               <XAxis dataKey="name" stroke="var(--text-secondary)" fontSize={11} />
@@ -174,9 +174,9 @@ const DashboardScreen = () => {
               <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
               <Tooltip
                 contentStyle={{ backgroundColor: 'var(--panel-bg)', borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}
-                formatter={(value) => [`${value.toLocaleString()} ج`, 'الإيراد']}
+                formatter={(value) => [`${value.toLocaleString()} EGP`, 'Revenue']}
               />
-              <Bar dataKey="revenue" name="إيرادات" fill="#10b981" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="revenue" name="Revenue" fill="#10b981" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -184,18 +184,18 @@ const DashboardScreen = () => {
 
       {/* Recent Patients */}
       <div className="card" style={{ overflowX: 'auto' }}>
-        <h3 style={{ marginBottom: '15px' }}>أحدث المرضى المسجلين</h3>
+        <h3 style={{ marginBottom: '15px' }}>Recent Patients</h3>
         {loading ? (
-          <p style={{ textAlign: 'center' }}>جاري التحميل...</p>
+          <p style={{ textAlign: 'center' }}>Loading...</p>
         ) : (
           <table style={{ width: '100%', fontSize: '14px' }}>
             <thead>
-              <tr style={{ background: 'var(--bg-primary)', textAlign: 'right' }}>
-                <th style={{ padding: '10px' }}>المريض</th>
-                <th style={{ padding: '10px' }}>الطبيب المعالج</th>
-                <th style={{ padding: '10px' }}>التليفون</th>
-                <th style={{ padding: '10px' }}>السعر</th>
-                <th style={{ padding: '10px' }}>التاريخ</th>
+              <tr style={{ background: 'var(--bg-primary)', textAlign: 'left' }}>
+                <th style={{ padding: '10px' }}>Patient</th>
+                <th style={{ padding: '10px' }}>Treating Doctor</th>
+                <th style={{ padding: '10px' }}>Phone</th>
+                <th style={{ padding: '10px' }}>Price</th>
+                <th style={{ padding: '10px' }}>Date</th>
               </tr>
             </thead>
             <tbody>
@@ -205,10 +205,10 @@ const DashboardScreen = () => {
                   <td style={{ padding: '10px', color: 'var(--primary-color)' }}>{p.referringDoctor || '---'}</td>
                   <td style={{ padding: '10px' }}>{p.phone || '---'}</td>
                   <td style={{ padding: '10px', color: '#10b981', fontWeight: 'bold' }}>
-                    {p.price ? `${Number(p.price).toLocaleString()} ج` : '---'}
+                    {p.price ? `${Number(p.price).toLocaleString()} EGP` : '---'}
                   </td>
                   <td style={{ padding: '10px', color: 'var(--text-secondary)', fontSize: '12px' }}>
-                    {new Date(p.createdAt).toLocaleDateString('ar-EG')}
+                    {new Date(p.createdAt).toLocaleDateString()}
                   </td>
                 </tr>
               ))}

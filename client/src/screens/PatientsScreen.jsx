@@ -76,17 +76,17 @@ const PatientsScreen = () => {
       setShowAddForm(false);
       setNewPatient({ name: '', nationalId: '', age: '', gender: 'Male', referringDoctor: '', phone: '', price: '' });
     } catch (error) {
-      alert(error.response?.data?.message || 'فشل إضافة المريض');
+      alert(error.response?.data?.message || 'Failed to add patient');
     }
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('هل أنت متأكد من حذف هذا المريض؟ سيتم مسح كافة سجلاته.')) {
+    if (window.confirm('Are you sure you want to delete this patient? All records will be wiped.')) {
       try {
         await api.delete(`/patients/${id}`);
         setPatients(patients.filter(p => p._id !== id));
       } catch (error) {
-        alert('فشل عملية الحذف');
+        alert('Deletion failed');
       }
     }
   };
@@ -104,20 +104,20 @@ const PatientsScreen = () => {
       setShowEditForm(false);
       setEditingPatient(null);
     } catch (error) {
-      alert('فشل التعديل');
+      alert('Edit failed');
     }
   };
 
   return (
     <div style={{ padding: '20px', position: 'relative' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-        <h2>إدارة المرضى</h2>
+        <h2>Patient Management</h2>
         <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
           <div style={{ position: 'relative', width: '300px' }}>
             <input 
               type="text" 
               className="input-field" 
-              placeholder="بحث بالاسم أو الرقم القومي..." 
+              placeholder="Search by Name or National ID..." 
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
               style={{ marginBottom: 0, paddingRight: '15px' }}
@@ -127,13 +127,13 @@ const PatientsScreen = () => {
             className="btn" 
             onClick={fetchPatients}
             style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'var(--panel-bg)', color: 'var(--text-primary)', border: '1px solid var(--border-color)', whiteSpace: 'nowrap' }}>
-             تحديث
+             Refresh
           </button>
           <button 
             className="btn btn-primary" 
             onClick={() => setShowAddForm(true)}
             style={{ display: 'flex', alignItems: 'center', gap: '8px', whiteSpace: 'nowrap' }}>
-            <Plus size={18} /> إضافة مريض
+            <Plus size={18} /> Add Patient
           </button>
         </div>
       </div>
@@ -143,43 +143,51 @@ const PatientsScreen = () => {
         <div className="card" style={{ marginBottom: '20px', border: '2px solid var(--primary-color)' }}>
           <form onSubmit={handleAddPatient}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '15px' }}>
-              <h3>بيانات المريض الجديد</h3>
+              <h3>New Patient Information</h3>
               <button type="button" onClick={() => setShowAddForm(false)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--danger)' }}><X size={24} /></button>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+              {/* Row 1: Name | Age */}
               <div className="input-group">
-                <label className="input-label">الاسم بالكامل</label>
-                <input type="text" className="input-field" placeholder="اسم المريض" required value={newPatient.name} onChange={e => setNewPatient({...newPatient, name: e.target.value})} />
+                <label className="input-label">Patient Name</label>
+                <input type="text" className="input-field" placeholder="Full Name" required value={newPatient.name} onChange={e => setNewPatient({...newPatient, name: e.target.value})} />
               </div>
               <div className="input-group">
-                <label className="input-label">الرقم القومي</label>
-                <input type="text" className="input-field" placeholder="14 رقم" required value={newPatient.nationalId} onChange={e => setNewPatient({...newPatient, nationalId: e.target.value})} />
+                <label className="input-label">Patient Age</label>
+                <input type="number" className="input-field" placeholder="Age" required value={newPatient.age} onChange={e => setNewPatient({...newPatient, age: e.target.value})} />
               </div>
+
+              {/* Row 2: Gender | Treating Doctor */}
               <div className="input-group">
-                <label className="input-label">السن</label>
-                <input type="number" className="input-field" placeholder="عمر المريض" required value={newPatient.age} onChange={e => setNewPatient({...newPatient, age: e.target.value})} />
-              </div>
-              <div className="input-group">
-                <label className="input-label">النوع</label>
+                <label className="input-label">Gender</label>
                 <select className="input-field" value={newPatient.gender} onChange={e => setNewPatient({...newPatient, gender: e.target.value})}>
-                  <option value="Male">ذكر</option>
-                  <option value="Female">أنثى</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
                 </select>
               </div>
               <div className="input-group">
-                <label className="input-label">الطبيب المعالج / Referring Doctor</label>
-                <input type="text" className="input-field" placeholder="اسم دكتور المريض" required value={newPatient.referringDoctor} onChange={e => setNewPatient({...newPatient, referringDoctor: e.target.value})} />
+                <label className="input-label">Treating Doctor</label>
+                <input type="text" className="input-field" placeholder="Doctor Name" required value={newPatient.referringDoctor} onChange={e => setNewPatient({...newPatient, referringDoctor: e.target.value})} />
+              </div>
+
+              {/* Row 3: Phone | National ID */}
+              <div className="input-group">
+                <label className="input-label">Phone Number</label>
+                <input type="tel" className="input-field" placeholder="Phone" value={newPatient.phone} onChange={e => setNewPatient({...newPatient, phone: e.target.value})} />
               </div>
               <div className="input-group">
-                <label className="input-label">رقم التليفون</label>
-                <input type="tel" className="input-field" placeholder="رقم هاتف المريض" value={newPatient.phone} onChange={e => setNewPatient({...newPatient, phone: e.target.value})} />
+                <label className="input-label">National ID</label>
+                <input type="text" className="input-field" placeholder="14 digits" required value={newPatient.nationalId} onChange={e => setNewPatient({...newPatient, nationalId: e.target.value})} />
               </div>
+
+              {/* Row 4: Price */}
               <div className="input-group">
-                <label className="input-label">سعر التحليل (جنيه)</label>
+                <label className="input-label">Analysis Price (EGP)</label>
                 <input type="number" className="input-field" placeholder="0" min="0" value={newPatient.price} onChange={e => setNewPatient({...newPatient, price: e.target.value})} />
               </div>
+              <div></div> {/* Empty cell for alignment */}
             </div>
-            <button type="submit" className="btn btn-primary" style={{ marginTop: '10px' }}>حفظ المريض</button>
+            <button type="submit" className="btn btn-primary" style={{ marginTop: '10px' }}>Save Patient</button>
           </form>
         </div>
       )}
@@ -187,13 +195,14 @@ const PatientsScreen = () => {
       {showEditForm && editingPatient && (
         <div className="card" style={{ marginBottom: '20px', border: '2px solid var(--warning)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '15px' }}>
-            <h3>تعديل بيانات المريض</h3>
+            <h3>Edit Patient Information</h3>
             <button onClick={() => setShowEditForm(false)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--danger)' }}><X size={24} /></button>
           </div>
           <form onSubmit={handleUpdate}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+              {/* Row 1: Name | Age */}
               <div className="input-group">
-                <label className="input-label">الاسم</label>
+                <label className="input-label">Name</label>
                 <input 
                   type="text" 
                   className="input-field" 
@@ -202,16 +211,7 @@ const PatientsScreen = () => {
                 />
               </div>
               <div className="input-group">
-                <label className="input-label">الرقم القومي</label>
-                <input 
-                  type="text" 
-                  className="input-field" 
-                  value={editingPatient.nationalId} 
-                  onChange={e => setEditingPatient({...editingPatient, nationalId: e.target.value})}
-                />
-              </div>
-              <div className="input-group">
-                <label className="input-label">السن</label>
+                <label className="input-label">Age</label>
                 <input 
                   type="number" 
                   className="input-field" 
@@ -219,19 +219,21 @@ const PatientsScreen = () => {
                   onChange={e => setEditingPatient({...editingPatient, age: e.target.value})}
                 />
               </div>
+
+              {/* Row 2: Gender | Treating Doctor */}
               <div className="input-group">
-                <label className="input-label">النوع</label>
+                <label className="input-label">Gender</label>
                 <select 
                   className="input-field" 
                   value={editingPatient.gender}
                   onChange={e => setEditingPatient({...editingPatient, gender: e.target.value})}
                 >
-                  <option value="Male">ذكر</option>
-                  <option value="Female">أنثى</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
                 </select>
               </div>
               <div className="input-group">
-                <label className="input-label">الطبيب المعالج / Referring Doctor</label>
+                <label className="input-label">Treating Doctor</label>
                 <input 
                   type="text" 
                   className="input-field" 
@@ -239,18 +241,31 @@ const PatientsScreen = () => {
                   onChange={e => setEditingPatient({...editingPatient, referringDoctor: e.target.value})}
                 />
               </div>
+
+              {/* Row 3: Phone | National ID */}
               <div className="input-group">
-                <label className="input-label">رقم التليفون</label>
+                <label className="input-label">Phone Number</label>
                 <input 
                   type="tel" 
                   className="input-field" 
-                  placeholder="رقم هاتف المريض"
+                  placeholder="Phone Number"
                   value={editingPatient.phone || ''}
                   onChange={e => setEditingPatient({...editingPatient, phone: e.target.value})}
                 />
               </div>
               <div className="input-group">
-                <label className="input-label">سعر التحليل (جنيه)</label>
+                <label className="input-label">National ID</label>
+                <input 
+                  type="text" 
+                  className="input-field" 
+                  value={editingPatient.nationalId} 
+                  onChange={e => setEditingPatient({...editingPatient, nationalId: e.target.value})}
+                />
+              </div>
+
+              {/* Row 4: Price */}
+              <div className="input-group">
+                <label className="input-label">Analysis Price (EGP)</label>
                 <input 
                   type="number" 
                   className="input-field" 
@@ -261,27 +276,27 @@ const PatientsScreen = () => {
                 />
               </div>
             </div>
-            <button type="submit" className="btn btn-primary" style={{ background: 'var(--warning)', marginTop: '10px', color: '#000' }}>حفظ التعديلات</button>
+            <button type="submit" className="btn btn-primary" style={{ background: 'var(--warning)', marginTop: '10px', color: '#000' }}>Save Changes</button>
           </form>
         </div>
       )}
 
       <div className="card table-wrapper">
         {loading ? (
-          <div style={{ textAlign: 'center', padding: '20px' }}>جاري التحميل...</div>
+          <div style={{ textAlign: 'center', padding: '20px' }}>Loading...</div>
         ) : (
           <table>
             <thead>
               <tr>
-                <th>الاسم</th>
-                <th>الرقم القومي</th>
-                <th>السن</th>
-                <th>النوع</th>
-                <th>الطبيب المعالج</th>
-                <th>رقم التليفون</th>
-                <th>السعر</th>
-                <th>تاريخ الإضافة</th>
-                <th>إجراءات</th>
+                <th>Name</th>
+                <th>National ID</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Treating Doctor</th>
+                <th>Phone Number</th>
+                <th>Price</th>
+                <th>Date Added</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -290,30 +305,30 @@ const PatientsScreen = () => {
                   <td style={{ fontWeight: 'bold' }}>{p.name}</td>
                   <td style={{ fontFamily: 'monospace' }}>{p.nationalId}</td>
                   <td>{p.age}</td>
-                  <td>{p.gender === 'Male' ? 'ذكر' : 'أنثى'}</td>
+                  <td>{p.gender === 'Male' ? 'Male' : 'Female'}</td>
                   <td style={{ color: 'var(--primary-color)', fontWeight: '500' }}>{p.referringDoctor || '---'}</td>
                   <td style={{ color: 'var(--text-secondary)' }}>{p.phone || '---'}</td>
-                  <td style={{ color: '#10b981', fontWeight: 'bold' }}>{p.price ? `${Number(p.price).toLocaleString()} ج` : '---'}</td>
+                  <td style={{ color: '#10b981', fontWeight: 'bold' }}>{p.price ? `${Number(p.price).toLocaleString()} EGP` : '---'}</td>
                   <td>{new Date(p.createdAt || p.date).toLocaleDateString()}</td>
                   <td>
                     <div style={{ display: 'flex', gap: '8px' }}>
                       <button 
                         onClick={() => navigate(`/patients/${p._id}`)}
                         className="btn" 
-                        title="عرض الملف"
+                        title="View Profile"
                         style={{ background: '#e0e7ff', color: '#4f46e5', padding: '6px' }}>
-                        ملف المريض
+                        Patient Profile
                       </button>
                       <button 
                         onClick={() => startEdit(p)}
-                        title="تعديل"
+                        title="Edit"
                         className="btn" 
                         style={{ background: '#fef3c7', color: '#d97706', padding: '6px' }}>
                         <Edit size={16} />
                       </button>
                       <button 
                         onClick={() => handleDelete(p._id)}
-                        title="حذف"
+                        title="Delete"
                         className="btn" 
                         style={{ background: '#fee2e2', color: '#dc2626', padding: '6px' }}>
                         <Trash2 size={16} />
@@ -337,7 +352,7 @@ const PatientsScreen = () => {
               color: currentPage === pages ? '#999' : 'var(--text-primary)',
               cursor: currentPage === pages ? 'not-allowed' : 'pointer'
             }}>
-            التالي
+            Next
           </button>
         </div>
       </div>

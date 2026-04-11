@@ -45,13 +45,13 @@ const PatientProfileScreen = () => {
   });
 
   const handleDelete = async () => {
-    if (window.confirm('هل أنت متأكد من حذف هذا المريض نهائياً؟')) {
+    if (window.confirm('Are you sure you want to permanently delete this patient?')) {
       try {
         await api.delete(`/patients/${id}`);
-        alert('تم حذف المريض بنجاح.');
+        alert('Patient deleted successfully.');
         navigate('/patients');
       } catch (error) {
-        alert('حدث خطأ أثناء الحذف');
+        alert('Error occurred during deletion');
       }
     }
   };
@@ -62,24 +62,24 @@ const PatientProfileScreen = () => {
       const { data } = await api.put(`/patients/${id}`, patient);
       setPatient(data);
       setIsEditMode(false);
-      alert('تم تحديث البيانات بنجاح.');
+      alert('Information updated successfully.');
     } catch (error) {
-      alert('فشل التحديث');
+      alert('Update failed');
     }
   };
 
-  if (loading) return <div style={{ padding: '20px', textAlign: 'center' }}>جاري تحميل ملف المريض...</div>;
-  if (!patient) return <div style={{ padding: '20px', textAlign: 'center' }}>المريض غير موجود.</div>;
+  if (loading) return <div style={{ padding: '20px', textAlign: 'center' }}>Loading patient profile...</div>;
+  if (!patient) return <div style={{ padding: '20px', textAlign: 'center' }}>Patient not found.</div>;
 
   return (
     <div style={{ padding: '20px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <button onClick={() => navigate(-1)} className="btn" style={{ background: 'transparent', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <ArrowRight size={18} /> عودة للمرضى
+          <ArrowRight size={18} /> Back to Patients
         </button>
         
         <button onClick={handleDelete} className="btn" style={{ background: '#fee2e2', color: '#dc2626', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Trash2 size={18} /> حذف المريض
+          <Trash2 size={18} /> Delete Patient
         </button>
       </div>
 
@@ -93,33 +93,33 @@ const PatientProfileScreen = () => {
                   <User size={40} />
                 </div>
                 <h3>{patient.name}</h3>
-                <span style={{ color: 'var(--text-secondary)' }}>رقم قومي: {patient.nationalId}</span>
+                <span style={{ color: 'var(--text-secondary)' }}>National ID: {patient.nationalId}</span>
               </div>
               
               <div style={{ padding: '15px 0', borderTop: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between' }}>
-                <strong style={{ color: 'var(--text-secondary)' }}>السن</strong>
-                <span>{patient.age} سنة</span>
+                <strong style={{ color: 'var(--text-secondary)' }}>Age</strong>
+                <span>{patient.age} years</span>
               </div>
               <div style={{ padding: '15px 0', borderTop: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between' }}>
-                <strong style={{ color: 'var(--text-secondary)' }}>النوع</strong>
-                <span>{patient.gender === 'Male' ? 'ذكر' : 'أنثى'}</span>
+                <strong style={{ color: 'var(--text-secondary)' }}>Gender</strong>
+                <span>{patient.gender === 'Male' ? 'Male' : 'Female'}</span>
               </div>
               <div style={{ padding: '15px 0', borderTop: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between' }}>
-                <strong style={{ color: 'var(--text-secondary)' }}>تاريخ التسجيل</strong>
+                <strong style={{ color: 'var(--text-secondary)' }}>Registration Date</strong>
                 <span>{new Date(patient.createdAt).toLocaleDateString()}</span>
               </div>
               <div style={{ padding: '15px 0', borderTop: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between' }}>
-                <strong style={{ color: 'var(--text-secondary)' }}>الطبيب المعالج</strong>
-                <span style={{ fontWeight: 'bold', color: 'var(--primary-color)' }}>{patient.referringDoctor || 'لم يحدد'}</span>
+                <strong style={{ color: 'var(--text-secondary)' }}>Treating Doctor</strong>
+                <span style={{ fontWeight: 'bold', color: 'var(--primary-color)' }}>{patient.referringDoctor || 'Not specified'}</span>
               </div>
               <div style={{ padding: '15px 0', borderTop: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between' }}>
-                <strong style={{ color: 'var(--text-secondary)' }}>رقم الهاتف</strong>
-                <span style={{ direction: 'ltr', textAlign: 'left' }}>{patient.phone || <span style={{ color: 'var(--text-secondary)', fontStyle: 'italic' }}>غير مسجل</span>}</span>
+                <strong style={{ color: 'var(--text-secondary)' }}>Phone Number</strong>
+                <span style={{ direction: 'ltr', textAlign: 'left' }}>{patient.phone || <span style={{ color: 'var(--text-secondary)', fontStyle: 'italic' }}>Not registered</span>}</span>
               </div>
               <div style={{ padding: '15px 0', borderTop: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between' }}>
-                <strong style={{ color: 'var(--text-secondary)' }}>السعر</strong>
+                <strong style={{ color: 'var(--text-secondary)' }}>Price</strong>
                 <span style={{ fontWeight: 'bold', color: '#10b981' }}>
-                  {patient.price ? `${Number(patient.price).toLocaleString()} ج` : <span style={{ color: 'var(--text-secondary)', fontStyle: 'italic' }}>غير محدد</span>}
+                  {patient.price ? `${Number(patient.price).toLocaleString()} EGP` : <span style={{ color: 'var(--text-secondary)', fontStyle: 'italic' }}>Not specified</span>}
                 </span>
               </div>
               
@@ -127,41 +127,41 @@ const PatientProfileScreen = () => {
                 onClick={() => setIsEditMode(true)}
                 className="btn" 
                 style={{ width: '100%', background: 'var(--warning)', marginTop: '20px', color: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-                <Edit size={16} /> تعديل البيانات
+                <Edit size={16} /> Edit Information
               </button>
             </>
           ) : (
             <form onSubmit={handleUpdate}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
-                <h3>تعديل البيانات</h3>
+                <h3>Edit Information</h3>
                 <button type="button" onClick={() => setIsEditMode(false)} style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}><X size={20} /></button>
               </div>
               <div className="input-group">
-                <label className="input-label">الاسم</label>
+                <label className="input-label">Name</label>
                 <input type="text" className="input-field" value={patient.name} onChange={e => setPatient({...patient, name: e.target.value})} />
               </div>
               <div className="input-group">
-                <label className="input-label">الرقم القومي</label>
+                <label className="input-label">National ID</label>
                 <input type="text" className="input-field" value={patient.nationalId} onChange={e => setPatient({...patient, nationalId: e.target.value})} />
               </div>
               <div className="input-group">
-                <label className="input-label">السن</label>
+                <label className="input-label">Age</label>
                 <input type="number" className="input-field" value={patient.age} onChange={e => setPatient({...patient, age: e.target.value})} />
               </div>
               <div className="input-group">
-                <label className="input-label">الطبيب المعالج / Referring Doctor</label>
+                <label className="input-label">Treating Doctor</label>
                 <input type="text" className="input-field" value={patient.referringDoctor || ''} onChange={e => setPatient({...patient, referringDoctor: e.target.value})} />
               </div>
               <div className="input-group">
-                <label className="input-label">رقم الهاتف</label>
-                <input type="tel" className="input-field" placeholder="رقم هاتف المريض" value={patient.phone || ''} onChange={e => setPatient({...patient, phone: e.target.value})} />
+                <label className="input-label">Phone Number</label>
+                <input type="tel" className="input-field" placeholder="Phone Number" value={patient.phone || ''} onChange={e => setPatient({...patient, phone: e.target.value})} />
               </div>
               <div className="input-group">
-                <label className="input-label">السعر (جنيه)</label>
+                <label className="input-label">Price (EGP)</label>
                 <input type="number" className="input-field" placeholder="0" min="0" value={patient.price || ''} onChange={e => setPatient({...patient, price: e.target.value})} />
               </div>
               <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-                <Save size={16} /> حفظ
+                <Save size={16} /> Save
               </button>
             </form>
           )}
@@ -170,12 +170,12 @@ const PatientProfileScreen = () => {
         {/* Medical History Section */}
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '20px' }}>
-            <h3 style={{ margin: 0 }}>التاريخ الطبي والتقارير</h3>
+            <h3 style={{ margin: 0 }}>Medical History & Reports</h3>
             <div style={{ flex: 1, position: 'relative' }}>
               <input 
                 type="text" 
                 className="input-field" 
-                placeholder="بحث في التشخيصات..." 
+                placeholder="Search diagnoses..." 
                 value={caseSearchTerm}
                 onChange={e => setCaseSearchTerm(e.target.value)}
                 style={{ marginBottom: 0, paddingRight: '35px' }}
@@ -183,26 +183,26 @@ const PatientProfileScreen = () => {
               <FileText size={16} style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
             </div>
             <button onClick={() => navigate(`/cases/new/${patient._id}`)} className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px', whiteSpace: 'nowrap' }}>
-              إضافة تقرير
+              Add Report
             </button>
           </div>
 
 
           <div className="card table-wrapper">
             {cases.length === 0 ? (
-              <p style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>لا توجد تقارير سابقة لهذا المريض.</p>
+              <p style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>No previous reports for this patient.</p>
             ) : filteredCases.length === 0 ? (
               <p style={{ textAlign: 'center', color: 'var(--text-secondary)', padding: '20px' }}>
-                لا توجد نتائج لـ “{caseSearchTerm}”
+                No results found for “{caseSearchTerm}”
               </p>
             ) : (
               <table>
                 <thead>
                   <tr>
-                    <th>تاريخ التقرير</th>
-                    <th>التشخيص</th>
-                    <th>الطبيب المعالج</th>
-                    <th>إجراءات</th>
+                    <th>Report Date</th>
+                    <th>Diagnosis</th>
+                    <th>Treating Doctor</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -210,9 +210,9 @@ const PatientProfileScreen = () => {
                     <tr key={c._id}>
                       <td>{new Date(c.createdAt).toLocaleDateString()}</td>
                       <td style={{ fontWeight: 'bold' }}>{c.diagnosis}</td>
-                      <td>{patient.referringDoctor || 'طبيب خارجي'}</td>
+                      <td>{patient.referringDoctor || 'External Doctor'}</td>
                       <td>
-                        <button onClick={() => navigate(`/cases/${c._id}`)} className="btn" style={{ background: '#e0e7ff', color: '#4f46e5', fontSize: '12px' }}>فتح التقرير</button>
+                        <button onClick={() => navigate(`/cases/${c._id}`)} className="btn" style={{ background: '#e0e7ff', color: '#4f46e5', fontSize: '12px' }}>Open Report</button>
                       </td>
                     </tr>
                   ))}

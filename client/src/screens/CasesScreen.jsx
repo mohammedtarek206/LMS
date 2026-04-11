@@ -66,38 +66,38 @@ const CasesScreen = () => {
   return (
     <div style={{ padding: '20px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-        <h2>التقارير والحالات</h2>
+        <h2>Reports & Cases</h2>
         <button className="btn btn-primary" onClick={() => navigate('/cases/new')} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Plus size={18} /> تقرير جديد
+          <Plus size={18} /> New Report
         </button>
       </div>
 
       <div className="card table-wrapper">
         {loading ? (
-          <div style={{ textAlign: 'center', padding: '20px' }}>جاري تحميل الحالات...</div>
+          <div style={{ textAlign: 'center', padding: '20px' }}>Loading cases...</div>
         ) : (
           <table>
             <thead>
               <tr>
-                <th>اسم المريض</th>
-                <th>التشخيص (Diagnosis)</th>
-                <th>الطبيب</th>
-                <th>التاريخ</th>
-                <th>إجراءات</th>
+                <th>Patient Name</th>
+                <th>Diagnosis</th>
+                <th>Doctor</th>
+                <th>Date</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               {cases.length === 0 ? (
-                <tr><td colSpan="5" style={{ textAlign: 'center' }}>لا توجد حالات مسجلة حالياً.</td></tr>
+                <tr><td colSpan="5" style={{ textAlign: 'center' }}>No cases registered currently.</td></tr>
               ) : (
                 cases.map((c) => (
                   <tr key={c._id}>
-                    <td style={{ fontWeight: 'bold' }}>{c.patient?.name || 'مريض محذوف'}</td>
+                    <td style={{ fontWeight: 'bold' }}>{c.patient?.name || 'Deleted Patient'}</td>
                     <td>{c.diagnosis}</td>
-                    <td>{c.doctor?.name || 'طبيب النظام'}</td>
+                    <td>{c.doctor?.name || 'System Doctor'}</td>
                     <td>{new Date(c.createdAt).toLocaleDateString()}</td>
                     <td style={{ display: 'flex', gap: '10px' }}>
-                      <button onClick={() => navigate(`/cases/${c._id}`)} className="btn" style={{ background: '#e0e7ff', color: '#4f46e5', fontSize: '12px' }}>عرض التفاصيل</button>
+                      <button onClick={() => navigate(`/cases/${c._id}`)} className="btn" style={{ background: '#e0e7ff', color: '#4f46e5', fontSize: '12px' }}>View Details</button>
                       <button onClick={() => generatePDF(c)} className="btn" style={{ background: '#dcfce7', color: '#16a34a', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '5px' }}>
                         <Download size={14} /> PDF
                       </button>

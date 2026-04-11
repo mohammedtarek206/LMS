@@ -15,31 +15,31 @@ const Sidebar = () => {
   return (
     <div className="sidebar no-print" style={{ width: '250px', background: 'var(--panel-bg)', height: '100vh', padding: '20px', borderRight: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column' }}>
       <div style={{ marginBottom: '40px', textAlign: 'center', fontWeight: 'bold', fontSize: '20px', color: 'var(--primary-color)' }}>
-        Viga Lab / فيجا لاب
+        Viga Lab
       </div>
       
       <nav style={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: 1 }}>
         <NavLink to="/dashboard" style={({isActive}) => ({ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px', borderRadius: '8px', background: isActive ? 'var(--primary-color)' : 'transparent', color: isActive ? '#fff' : 'var(--text-secondary)' })}>
-          <LayoutDashboard size={20} /> لوحة التحكم
+          <LayoutDashboard size={20} /> Dashboard
         </NavLink>
         
         <NavLink to="/patients" style={({isActive}) => ({ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px', borderRadius: '8px', background: isActive ? 'var(--primary-color)' : 'transparent', color: isActive ? '#fff' : 'var(--text-secondary)' })}>
-          <Users size={20} /> المرضى
+          <Users size={20} /> Patients
         </NavLink>
         
         <NavLink to="/cases" style={({isActive}) => ({ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px', borderRadius: '8px', background: isActive ? 'var(--primary-color)' : 'transparent', color: isActive ? '#fff' : 'var(--text-secondary)' })}>
-          <FileText size={20} /> التقارير والحالات
+          <FileText size={20} /> Reports & Cases
         </NavLink>
         
         {isAdmin && (
           <NavLink to="/settings" style={({isActive}) => ({ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px', borderRadius: '8px', background: isActive ? 'var(--primary-color)' : 'transparent', color: isActive ? '#fff' : 'var(--text-secondary)' })}>
-            <Settings size={20} /> الإعدادات
+            <Settings size={20} /> Settings
           </NavLink>
         )}
       </nav>
 
       <button onClick={handleLogout} className="btn" style={{ background: 'transparent', color: 'var(--danger)', display: 'flex', alignItems: 'center', gap: '10px', marginTop: 'auto', border: '1px solid var(--danger)', width: '100%', cursor: 'pointer' }}>
-        <LogOut size={20} /> تسجيل خروج
+        <LogOut size={20} /> Logout
       </button>
     </div>
   );

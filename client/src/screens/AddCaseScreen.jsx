@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Save, ArrowRight } from 'lucide-react';
+import { Plus, ArrowRight } from 'lucide-react';
 import api from '../api';
 
 const AddCaseScreen = () => {
@@ -19,13 +19,13 @@ const AddCaseScreen = () => {
     setLoading(true);
 
     if (!userInfo || !userInfo._id) {
-      alert('جلسة العمل انتهت، يرجى تسجيل الخروج والدخول مرة أخرى.');
+      alert('Session expired, please logout and login again.');
       setLoading(false);
       return;
     }
 
     if (!patientId) {
-      alert('خطأ: لم يتم تحديد مريض لهذا التقرير.');
+      alert('Error: No patient selected for this report.');
       setLoading(false);
       return;
     }
@@ -41,10 +41,10 @@ const AddCaseScreen = () => {
       };
 
       await api.post('/cases', caseData);
-      alert('تم حفظ التقرير بنجاح!');
+      alert('Report saved successfully!');
       navigate('/cases');
     } catch (error) {
-      alert(error.response?.data?.message || 'فشل حفظ التقرير');
+      alert(error.response?.data?.message || 'Failed to save report');
     } finally {
       setLoading(false);
     }
@@ -53,32 +53,20 @@ const AddCaseScreen = () => {
   return (
     <div style={{ padding: '20px' }}>
       <button onClick={() => navigate(-1)} className="btn" style={{ background: 'transparent', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px' }}>
-        <ArrowRight size={18} /> عودة
+        <ArrowRight size={18} /> Back
       </button>
 
       <div className="card" style={{ maxWidth: '800px', margin: '0 auto' }}>
-        <h2 style={{ marginBottom: '20px' }}>إضافة تقرير جديد</h2>
-        {patientId && <p style={{ color: 'var(--primary-color)', marginBottom: '20px' }}>للمريض المفعّل حالياً</p>}
+        <h2 style={{ marginBottom: '20px' }}>Add New Report</h2>
+        {patientId && <p style={{ color: 'var(--primary-color)', marginBottom: '20px' }}>For the currently active patient</p>}
         
         <form onSubmit={submitHandler}>
           <div className="input-group">
-            <label className="input-label">التشخيص (Diagnosis)</label>
+            <label className="input-label">Specimen</label>
             <input 
               type="text" 
               className="input-field" 
-              placeholder="اكتب التشخيص هنا..." 
-              required 
-              value={diagnosis}
-              onChange={(e) => setDiagnosis(e.target.value)}
-            />
-          </div>
-
-          <div className="input-group">
-            <label className="input-label">العينة (Specimen)</label>
-            <input 
-              type="text" 
-              className="input-field" 
-              placeholder="وصف العينة المستلمة" 
+              placeholder="Description of the specimen received" 
               required 
               value={specimen}
               onChange={(e) => setSpecimen(e.target.value)}
@@ -86,11 +74,11 @@ const AddCaseScreen = () => {
           </div>
 
           <div className="input-group">
-            <label className="input-label">الوصف الظاهري (Gross Description)</label>
+            <label className="input-label">Gross Description</label>
             <textarea 
               className="input-field" 
               rows={4} 
-              placeholder="اكتب الوصف الظاهري..."
+              placeholder="Enter gross description..."
               required
               value={gross}
               onChange={(e) => setGross(e.target.value)}
@@ -98,19 +86,31 @@ const AddCaseScreen = () => {
           </div>
 
           <div className="input-group">
-            <label className="input-label">الوصف الميكروسكوبي (Microscopic Description)</label>
+            <label className="input-label">Microscopic Description</label>
             <textarea 
               className="input-field" 
               rows={4} 
-              placeholder="اكتب الوصف الميكروسكوبي..."
+              placeholder="Enter microscopic description..."
               required
               value={microscopic}
               onChange={(e) => setMicroscopic(e.target.value)}
             ></textarea>
           </div>
 
+          <div className="input-group">
+            <label className="input-label">Diagnosis</label>
+            <input 
+              type="text" 
+              className="input-field" 
+              placeholder="Enter diagnosis here..." 
+              required 
+              value={diagnosis}
+              onChange={(e) => setDiagnosis(e.target.value)}
+            />
+          </div>
+
           <button type="submit" disabled={loading} className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '20px', width: '100%', justifyContent: 'center' }}>
-            <Save size={18} /> {loading ? 'جاري الحفظ...' : 'حفظ وعرض التقرير'}
+            <Plus size={18} /> {loading ? 'Saving...' : 'Save & View Report'}
           </button>
         </form>
       </div>
